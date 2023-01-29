@@ -5,8 +5,10 @@ deployment:
   mongo:
     secrets:
       mongoKey: |
-        randomcontentgoeshere
-      mongoRootPassword: "changethesepasswords"
+        ahaksdnqsakdqnajhvckqaafnxasxaxaxmaskdadadsasfsdsdfsf
+        schcacnctcacncuadasdadadfbsasddfbadadwsioweewvaas
+        dfasasakjsvnaa
+      mongoRootPassword: "c2hhbnRhbnViYW5zYWw=" # random base64 encoding of your choice
       digitsDbPassword: "Y2hhbmdldGhlc2VwYXNzd29yZHM=" # base64 of the api.main.config.dbUrl value
   api:
     main:

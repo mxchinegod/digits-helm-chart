@@ -69,7 +69,7 @@ metadata:
 ---
 apiVersion: v1
 data:
-  mongo.key: {{ .Values.deployment.mongo.secrets.mongoKey }}
+  mongo.key: {{ .Values.deployment.mongo.secrets.mongoKey | quote }}
 kind: ConfigMap
 metadata:
   name: mongo-key
