@@ -18,7 +18,3 @@ spec:
             name: ui
             port:
               number: 80
-status:
-  loadBalancer:
-    ingress:
-    - {}
