@@ -10,4 +10,4 @@ maintainers:
 appVersion: 3.0.0-beta
 type: application
 sources:
-- https://github.com/dylanalloy/digits-k8s
+- https://github.com/dylanalloy/digits-helm-chart
