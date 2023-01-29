@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: {{ .Values.deployment.namespace }}-digits
+  labels:
+    name: {{ .Values.deployment.labels.environment }}

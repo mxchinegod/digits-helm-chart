@@ -1,0 +1,43 @@
+deployment:
+  namespace: "dev" # '-digits' will be appended
+  labels:
+    environment: "dev"
+  mongo:
+    secrets:
+      mongoKey: |
+        randomcontentgoeshere
+      mongoRootPassword: "changethesepasswords"
+      digitsDbPassword: "Y2hhbmdldGhlc2VwYXNzd29yZHM=" # base64 of the api.main.config.dbUrl value
+  api:
+    main:
+      config: |
+        module.exports = {
+          dbUrl: 'mongodb://digits:changethesepasswords@mongo-0.mongo:27017/digits_db',
+          Secret: 'changethissecret',
+          EXPIRES: 606024,
+          stripeKey: '',
+          stripeWebhookSecret: '',
+          apiHost: {
+              altData: 'http://api-altdata:6000'
+              , tdaData: 'http://api-tda:6001'
+              , mlData: 'http://api-ml:7000'
+          }
+        }
+    tda:
+      config: |
+        module.exports = {
+            consumer: ''
+            , servicePort: 6001
+            , tdaHost: 'https://api.tdameritrade.com'
+        }
+    altdata:
+      config: |
+        module.exports = {
+            servicePort: 6000
+            , newsApi: ''
+        }
+    ml:
+      config: |
+        [DEFAULT]
+        open_ai=
+        google_search=

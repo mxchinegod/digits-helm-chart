@@ -1,0 +1,115 @@
+kind: ConfigMap 
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-main-config
+  labels:
+    environment: 
+    app: digits
+data:
+  config.js: {{ .Values.deployment.api.main.config | quote }}
+---
+kind: ConfigMap 
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-tda-config
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: digits
+data:
+  config.js: {{ .Values.deployment.api.tda.config | quote }}
+---
+kind: ConfigMap 
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-altdata-config
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: digits
+data:
+  config.js: {{ .Values.deployment.api.altdata.config | quote }}
+---
+kind: ConfigMap 
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-ml-config
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: digits
+data:
+  config.ini: {{ .Values.deployment.api.ml.config | quote  }}
+---
+kind: ConfigMap 
+apiVersion: v1
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: ui-nginx-conf
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: digits
+data:
+  nginx.conf: |
+    user  nginx;
+    worker_processes  auto;
+
+    error_log  /var/log/nginx/error.log notice;
+    pid        /var/run/nginx.pid;
+
+
+    events {
+      worker_connections  1024;
+    }
+
+
+    http {
+      include       /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+
+      log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+
+      access_log  /var/log/nginx/access.log  main;
+      server {
+        server_name localhost alloydylan.com dgtsapp.com dgts.app 192.168.1.6 kubernetes.docker.internal;
+        listen 8080;
+        # gzip config
+        gzip on;
+        gzip_min_length 1k;
+        gzip_comp_level 9;
+        gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
+        gzip_vary on;
+        gzip_disable "MSIE [1-6]\.";
+
+        root /usr/share/nginx/html;
+
+        location / {
+            # 用于配合 browserHistory使用
+          try_files $uri $uri/index.html /index.html;
+
+            # 如果有资源，建议使用 https + http2，配合按需加载可以获得更好的体验
+            # rewrite ^/(.*)$ http://localhost:59082/$1 permanent;
+
+        }
+        location /api/ {
+          proxy_pass http://api-main:3000/api/;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_set_header Host $host;
+          proxy_cache_bypass $http_upgrade;
+        }
+      }
+      sendfile        on;
+      #tcp_nopush     on;
+
+      keepalive_timeout  65;
+
+      #gzip  on;
+
+      include /etc/nginx/conf.d/*.conf;
+    }
+---

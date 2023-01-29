@@ -1,0 +1,184 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-main
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: api-main
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      environment: {{ .Values.deployment.labels.environment }}
+  template:
+    metadata:
+      namespace: {{ .Values.deployment.namespace }}-digits
+      labels:
+        environment: {{ .Values.deployment.labels.environment }}
+        app: api-main
+    spec:
+      containers:
+      - name: digits-api-main
+        image: dylanalloy/digits-api-main
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+            - name: config-js-volume
+              mountPath: /usr/src/app/config.js
+              subPath: config.js
+      volumes:
+        - name: config-js-volume
+          configMap:
+            name: api-main-config
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-altdata
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: api-altdata
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      environment: {{ .Values.deployment.labels.environment }}
+  template:
+    metadata:
+      namespace: {{ .Values.deployment.namespace }}-digits
+      labels:
+        environment: {{ .Values.deployment.labels.environment }}
+        app: api-altdata
+    spec:
+      containers:
+      - name: digits-api-altdata
+        image: dylanalloy/digits-api-altdata
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6000
+        volumeMounts:
+            - name: config-js-volume
+              mountPath: /usr/src/app/config.js
+              subPath: config.js
+      volumes:
+        - name: config-js-volume
+          configMap:
+            name: api-altdata-config
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-tda
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: api-tda
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      environment: {{ .Values.deployment.labels.environment }}
+      app: api-tda
+  template:
+    metadata:
+      namespace: {{ .Values.deployment.namespace }}-digits
+      labels:
+        app: api-tda
+        environment: {{ .Values.deployment.labels.environment }}
+    spec:
+      containers:
+      - name: digits-api-tda
+        image: dylanalloy/digits-api-tda
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6001
+        volumeMounts:
+            - name: config-js-volume
+              mountPath: /usr/src/app/config.js
+              subPath: config.js
+      volumes:
+        - name: config-js-volume
+          configMap:
+            name: api-tda-config
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-ml
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: api-ml
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: api-ml
+  template:
+    metadata:
+      namespace: {{ .Values.deployment.namespace }}-digits
+      labels:
+        app: api-ml
+    spec:
+      containers:
+      - name: digits-api-ml
+        image: dylanalloy/digits-api-ml:arm
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 4
+            memory: "4Gi"
+        ports:
+        - containerPort: 7000
+        volumeMounts:
+            - name: config-ini-volume
+              mountPath: ./config.ini
+              subPath: config.ini
+      volumes:
+        - name: config-ini-volume
+          configMap:
+            name: api-ml-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: ui
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: ui
+  template:
+    metadata:
+      namespace: {{ .Values.deployment.namespace }}-digits
+      labels:
+        name: ui
+        app: ui
+    spec:
+      containers:
+      - name: digits-ui
+        image: dylanalloy/digits-ui
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        volumeMounts:
+            - name: nginx-conf-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: nginx-conf-volume
+          configMap:
+            name: ui-nginx-conf
+---

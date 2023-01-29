@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: digits-ingress
+  namespace: {{ .Values.deployment.namespace }}-digits
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: dgtsapp.com
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: /
+        backend:
+          service:
+            name: ui
+            port:
+              number: 80

@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: ui
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: ui
+spec:
+  selector:
+    app: ui
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+    name: http
+  type: LoadBalancer
+  externalIPs:
+  - 192.168.1.6
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-main
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: api-main
+spec:
+  selector:
+    app: api-main
+  ports:
+  - port: 3000
+    protocol: TCP
+    name: main-internal
+    targetPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-ml
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: api-ml
+spec:
+  selector:
+    app: api-ml
+  ports:
+  - port: 7000
+    protocol: TCP
+    name: ml-internal
+    targetPort: 7000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-tda
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: api-tda
+spec:
+  selector:
+    app: api-tda
+  ports:
+  - port: 6001
+    protocol: TCP
+    name: tda-internal
+    targetPort: 6001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.deployment.namespace }}-digits
+  name: api-altdata
+  labels:
+    environment: {{ .Values.deployment.labels.environment }}
+    app: api-altdata
+spec:
+  selector:
+    app: api-altdata
+  ports:
+  - port: 6000
+    protocol: TCP
+    name: altdata-internal
+    targetPort: 6000
+---

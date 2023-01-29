@@ -1,0 +1,13 @@
+apiVersion: v2
+name: Digits
+version: 0.1.0
+description: Helm Chart for a simple Digits configuration
+
+maintainers:
+- name: Dylan Moore
+  email: alloydylan@icloud.com
+
+appVersion: 0.1.0
+type: application
+sources:
+- https://github.com/dylanalloy/digits-k8s
