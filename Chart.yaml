@@ -7,7 +7,7 @@ maintainers:
 - name: Dylan Moore
   email: alloydylan@icloud.com
 
-appVersion: 0.1.0
+appVersion: 3.0.0-beta
 type: application
 sources:
 - https://github.com/dylanalloy/digits-k8s
