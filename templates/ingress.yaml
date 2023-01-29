@@ -21,4 +21,4 @@ spec:
 status:
   loadBalancer:
     ingress:
-    - hostname: dgtsapp.com
+    - {}
