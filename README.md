@@ -1,5 +1,5 @@
 # digits-helm-chart
-Kubernetes helm Chart for the Digits App.
+Kubernetes Helm Chart for the Digits app.
 
 ## 🚀 Usage
 
