@@ -29,6 +29,9 @@ using the following command yourself (i.e. do not let kubernetes try to pull the
 
 as an example. The `--platform` argument is key here until I can create ARM images with Github Actions.
 
+# ✨ Goals
+
+ - [ ] Swap out beta mongodb deployment for Bitnami's MongoDB
 
 # 🙋 Contribution 
 
