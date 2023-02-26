@@ -37,9 +37,16 @@ deployment:
         module.exports = {
             servicePort: 6000
             , newsApi: ''
+            , googleKey: ''
+            , googleCx: ''
         }
     ml:
       config: |
         [DEFAULT]
         open_ai=
         google_search=
+        google_cx=
+        twitter_consumer=
+        twitter_consumer_secret=
+        twitter_token=
+        twitter_key=
