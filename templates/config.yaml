@@ -4,7 +4,7 @@ metadata:
   namespace: {{ .Values.deployment.namespace }}-digits
   name: api-main-config
   labels:
-    environment: 
+    environment: {{ .Values.deployment.labels.environment }}
     app: digits
 data:
   config.js: {{ .Values.deployment.api.main.config | quote }}

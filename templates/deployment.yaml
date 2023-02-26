@@ -8,6 +8,7 @@ metadata:
     app: api-main
 spec:
   replicas: 1
+  serviceName: api-main
   selector:
     matchLabels: 
       environment: {{ .Values.deployment.labels.environment }}
@@ -44,6 +45,7 @@ metadata:
     app: api-altdata
 spec:
   replicas: 1
+  serviceName: api-altdata
   selector:
     matchLabels: 
       environment: {{ .Values.deployment.labels.environment }}
@@ -80,6 +82,7 @@ metadata:
     app: api-tda
 spec:
   replicas: 1
+  serviceName: api-tda
   selector:
     matchLabels: 
       environment: {{ .Values.deployment.labels.environment }}
@@ -117,6 +120,7 @@ metadata:
     app: api-ml
 spec:
   replicas: 1
+  serviceName: api-ml
   selector:
     matchLabels: 
       app: api-ml
