@@ -74,6 +74,7 @@ data:
 
       access_log  /var/log/nginx/access.log  main;
       server {
+        large_client_header_buffers 4 32k;
         server_name localhost alloydylan.com dgtsapp.com dgts.app 192.168.1.6 kubernetes.docker.internal;
         listen 8080;
         # gzip config
